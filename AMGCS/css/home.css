@@ -1,0 +1,725 @@
+/* ===============================
+   GLOBAL BASE STYLES
+================================= */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ===============================
+   HEADER (TOP BAR)
+================================= */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #006400;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header .logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* ================================== */
+/* HEADER ICONS & DROPDOWNS           */
+/* ================================== */
+
+/* --- General Icon Button Styles --- */
+.header .icon-trigger { /* Use a common class for icon buttons */
+background: none;
+border: none;
+color: #fdfbfb;
+font-size: 20px;
+cursor: pointer;
+}
+
+.header .icon-trigger:hover,
+.header .icon-trigger:focus {
+color: #007BFF; /* Default hover color */
+outline: none;
+}
+
+/* Style the actual Font Awesome icons inside the buttons */
+.header .icon-trigger i.fas,
+.header .icon-trigger i.fa-solid {
+ font-size: 1.25rem; /* Consistent icon size (adjust fa-xl if needed) */
+ vertical-align: middle; /* Ensure icon aligns well */
+ transition: color 0.2s ease; /* Smooth hover transition */
+ /* Color is inherited from parent .icon-trigger */
+}
+
+
+/* --- Notification Dropdown Specific --- */
+.notif-dropdown {
+position: relative;
+display: inline-block; /* Or flex if using .header-icons */
+}
+
+
+/* --- Settings Dropdown Specific --- */
+.settings-dropdown {
+position: relative;
+display: inline-block; /* Or flex if using .header-icons */
+}
+
+
+/* --- Common Dropdown Content Styling --- */
+/* (Used by BOTH notifications and settings) */
+.dropdown-content {
+display: none; /* Hide by default */
+position: absolute;
+right: 0; /* Position dropdown to the right edge */
+top: calc(100% + 5px); /* Position below the button with a gap */
+background-color: #f9f9f9;
+min-width: 180px; /* Slightly wider */
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1010; /* Ensure it's above header/sidebar */
+border-radius: 4px;
+overflow: hidden; /* Clip corners */
+}
+
+/* Style the links inside the dropdown */
+.dropdown-content a {
+color: #333333; /* Darker text */
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+white-space: nowrap; /* Prevent links from wrapping */
+font-size: 0.95rem;
+transition: background-color 0.2s ease;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+background-color: #e9e9e9; /* Lighter hover */
+}
+
+/* Optional separator style */
+.dropdown-content hr {
+  border: 0;
+  height: 1px;
+  background-color: #eeeeee; /* Lighter separator */
+  margin: 5px 0;
+}
+
+/* Class added by JavaScript to show the dropdown */
+/* JS needs to add 'show' to the specific dropdown-content div */
+.dropdown-content.show {
+display: block;
+}
+
+
+
+/* ===============================
+   SIDEBAR
+================================= */
+.sidebar {
+  width: 240px;
+  background-color: #023020;
+  color: white;
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  margin: center;
+}
+
+.sidebar a {
+  padding: 12px 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #035f2f;
+}
+
+.sidebar-section {
+  margin-top: 20px;
+}
+
+/* Hide the dropdown content by default */
+.sidebar-dropdown-content {
+  display: none;
+  /* Optional: Add some padding or margin to the content links */
+  padding-left: 15px; /* Example indentation */
+  /* Add other styling like background color if needed */
+  background-color: #035f2f; /* Example light background */
+}
+
+/* Show the dropdown content when the 'show' class is present */
+.sidebar-dropdown-content.show {
+  display: block;
+}
+
+/* Style for the dropdown section button/link */
+.sidebar-section {
+  background-color: #023020; /* Or your default sidebar background */
+  color: #fff; /* Your default sidebar text color */
+  cursor: pointer; /* Indicate it's clickable */
+  padding: 10px 15px; /* Match padding of regular links */
+  width: 100%; /* Make button take full width */
+  border: none; /* Remove default button border */
+  text-align: left; /* Align text to the left */
+  outline: none; /* Remove outline on focus */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+  display: flex; /* Use flexbox to align span and arrow */
+  justify-content: space-between; /* Space out text and arrow */
+  align-items: center; /* Vertically center items */
+  font-size: 1em; /* Inherit or set appropriate font size */
+}
+
+/* Style for the dropdown section on hover */
+.sidebar-section:hover {
+  background-color: #035f2f; /* Example hover color */
+}
+
+/* Style for the dropdown section when it's active/open */
+.sidebar-section.active-dropdown,
+.sidebar-section.active-dropdown:hover {
+  background-color: #007bff; /* Example active color */
+  color: white; /* Example active text color */
+}
+
+/* Style for regular sidebar links (optional, but good practice) */
+.sidebar-link {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 1em;
+    color: #333;
+    display: block; /* Make them block elements */
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background-color: #ddd;
+}
+
+/* Style for the active page link */
+.sidebar-link.active {
+  background-color: #007bff; /* Example active color */
+  color: white;
+}
+
+/* Style for the rotated arrow icon */
+.dropdown-arrow {
+    transition: transform 0.3s ease; /* Smooth rotation */
+}
+
+.sidebar-section.active-dropdown .dropdown-arrow {
+    transform: rotate(180deg); /* Rotate the arrow when dropdown is open */
+}
+
+/* Add padding to icons if needed */
+.sidebar .fas {
+    margin-right: 10px;
+}
+
+/* ===============================
+   MAIN CONTENT
+================================= */
+.content {
+  margin-left: 270px;
+  padding: 30px;
+  margin-top: 70px;
+}
+/* General Content */
+.content {
+  margin-left: 270px;
+  margin-top: 70px;
+  padding: 30px;
+}
+.box-container {
+  background-color: #ffffff; /* White background for the form container */
+  padding: 6px; /* Adjusted padding for proper space */
+  border-radius: 8px; /* Rounded corners for the box */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 1000px; /* Limit the max width of the container */
+  margin-top: 20px; /* Margin for spacing at the top */
+  display: block; /* Ensure the box container is displayed */
+  border: 1px solid #ddd; /* Light gray border for the box */
+}
+/* Container spacing inside form card */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* space between form groups */
+}
+
+/* Style for each form group label + input */
+form label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+form input,
+form select,
+form textarea {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border-color: #006400;
+}
+
+/* Optional: Add bottom margin if you're not using gap */
+form > * {
+  margin-bottom: 1px;
+}
+
+/* Filters Container */
+.filters {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.btn-save {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ===============================
+   NOTIFICATION DROPDOWN
+================================= */
+.dropdown-content {
+  position: absolute;
+  right: 10px;
+  top: 65px; /* <- Fix for "nasa taas parin si notif" */
+  background-color: white;
+  color: black;
+  width: 320px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  display: none;
+  z-index: 1000;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  font-weight: bold;
+  border-bottom: 2px solid green;
+}
+
+.notification-container {
+  padding: 10px;
+}
+
+.notification-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notification-container th,
+.notification-container td {
+  padding: 8px;
+  text-align: left;
+}
+
+.notification-container tr.new {
+  background-color: #e7f7e7;
+}
+
+.status-new {
+  color: green;
+  font-weight: bold;
+}
+
+.status-read {
+  color: gray;
+}
+
+/* ===============================
+   MODAL
+================================= */
+.modal {
+  display: none; /* Keep it hidden by default */
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Add display: flex to make justify-content and align-items work */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  /* Keep text-align: center if you want the title/message centered */
+  text-align: center;
+  max-width: 500px; /* Optional: Add a max-width for better responsiveness */
+  width: 90%;      /* Optional: Add a width */
+}
+
+/* New container for the buttons */
+.modal-buttons {
+  /* Override the centering from .modal-content for elements inside this div */
+  text-align: right;
+  margin-top: 20px; /* Add some space above the buttons */
+}
+
+/* Keep existing button styles, but maybe adjust margins slightly */
+.modal-content .yes-btn,
+.modal-content .cancel-btn {
+  padding: 10px 20px;
+  /* Adjust horizontal margin if needed, keep vertical margin */
+  margin: 10px 5px; 
+  border: none;
+  cursor: pointer;
+  /* Remove text-align: center as it's handled by .modal-buttons container */
+}
+
+.modal-content .yes-btn {
+  background-color: #04986c;
+  border-radius: 8px;
+  color: white;
+}
+
+.modal-content .cancel-btn {
+  background-color: #d33e3e;
+  border-radius: 8px;
+  color: white;
+}
+
+/* Keep existing title style */
+.modal-content h3 {
+  margin-top: 0;
+  /* Keep text-align: center if you want the title centered */
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Keep existing label style */
+.modal-content label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  /* Keep text-align: center if you want labels centered */
+  text-align: center;
+}
+
+/* ===============================
+   TABLE STYLES
+================================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+table tbody tr:hover {
+  background-color: #f3f3f3;
+  transition: background-color 0.2s ease;
+}
+
+/* ===============================
+   STATUS & TYPE TAGS
+================================= */
+.status-active {
+  color: green;
+  
+}
+
+.status-completed {
+  color: blue;
+}
+
+.status-cancelled {
+  color: grey;
+  text-decoration: line-through;
+}
+
+.waste-type {
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: white;
+  text-transform: capitalize;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.bio {
+  background-color: #388e3c;
+}
+
+.non-bio {
+  background-color: #d32f2f;
+}
+
+.recyclable {
+  background-color: #1976d2;
+}
+
+.status-tag {
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.status-active { background-color: #388e3c; }
+.status-idle { background-color: #f9a825; }
+.status-maintenance { background-color: #d32f2f; }
+
+/* ===============================
+   BUTTON STYLES
+================================= */
+.btn {
+  padding: 8px 15px;
+  color: rgb(57, 177, 63);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-edit, .btn-delete {
+  padding: 6px 12px; /* Consistent padding */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 14px; /* Same font size */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.btn-edit {
+  background-color: #45f34d; /* Green for edit */
+  color: white;
+}
+
+.btn-delete {
+  background-color: #dc3545; /* Red for delete */
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #4caf50; /* Slightly darker green on hover */
+  transform: translateY(-2px); /* Slight elevation on hover */
+}
+
+.btn-delete:hover {
+  background-color: #e02424; /* Slightly darker red on hover */
+  transform: translateY(-2px); /* Slight elevation on hover */
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center; /* Center-align the buttons */
+  gap: 10px; /* Add space between buttons */
+  align-items: center; /* Vertically align the buttons */
+}
+
+.btn-add {
+  background: linear-gradient(135deg, #1beb4b, #218838);
+  color: white;
+  padding: 10px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-add i {
+  margin-right: 6px;
+}
+
+.btn-add:hover {
+  background: linear-gradient(135deg, #218838, #1e7e34);
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   FLASH MESSAGES
+================================= */
+.flash-message {
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+}
+
+.flash-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.flash-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* ===============================
+   DASHBOARD CARD STYLES
+================================= */
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 2rem;
+  color: darkgreen;
+  margin-bottom: 5px;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* ===============================
+   CHART SECTION STYLES
+================================= */
+.chart-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.chart-box {
+  flex: 1;
+  min-width: 400px;
+  max-width: 48%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: 280px !important;
+}
