@@ -1,0 +1,47 @@
+/* Add this CSS to your stylesheet (e.g., style.css) */
+
+.schedule-table-container {
+    display: table; /* Makes the container behave like a <table> */
+    width: 100%; /* Optional: Make it fill its container */
+    border-collapse: collapse; /* Similar to a real table */
+    margin-top: 20px; /* Add some space below the heading */
+    /* Add border or background if needed for the whole table */
+}
+
+.schedule-table-row {
+    display: table-row; /* Makes each row div behave like a <tr> */
+}
+
+.schedule-table-cell {
+    display: table-cell; /* Makes each cell div behave like a <td> */
+    padding: 10px; /* Add padding inside cells */
+    border: 1px solid #ddd; /* Add borders for visualization */
+    vertical-align: top; /* Align content to the top, like default table cells */
+}
+
+.schedule-table-header.schedule-table-row {
+    /* Style the header row */
+    background-color: #f2f2f2; /* Light gray background */
+    font-weight: bold;
+}
+
+.schedule-table-header-cell {
+     /* Specific styles for header cells if needed */
+     /* Inherits display: table-cell and padding from .schedule-table-cell */
+     text-align: left; /* Default for headers */
+}
+
+/* Optional: Add a border only between rows, not around the container */
+/* You might need to adjust borders depending on desired look */
+/* Example:
+.schedule-table-cell {
+     border-bottom: 1px solid #ddd;
+     border-right: 1px solid #ddd;
+}
+.schedule-table-cell:first-child {
+     border-left: 1px solid #ddd;
+}
+.schedule-table-row:first-child .schedule-table-cell {
+     border-top: 1px solid #ddd;
+}
+*/
