@@ -1,0 +1,443 @@
+/* --- Compact Two-Column Layout for Add/Edit User Modal --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 30px;
+  align-items: start;
+}
+
+.form-column label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-column input,
+.form-column select {
+  width: 100%;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Compact Add/Edit User Modal --- */
+.form-grid.compact {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 20px;
+}
+
+.form-grid.compact .form-column.full {
+  grid-column: span 2;
+}
+
+.form-grid.compact label {
+  font-size: 0.9em;
+  margin-bottom: 3px;
+}
+
+.form-grid.compact input,
+.form-grid.compact select {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.9em;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* --- General Content Styles --- */
+.content {
+    margin-left: 270px;
+    margin-top: 70px;
+    padding: 20px;
+    min-height: calc(100vh - 70px);
+    background-color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+/* --- Table Styles --- */
+#userTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#municipalityTable { 
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* Common table cell/header styles */
+#userTable th,
+#userTable td,
+#municipalityTable th, 
+#municipalityTable td,
+#truckTable th,
+#truckTable td { 
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* Common table header styles */
+#userTable th,
+#municipalityTable th,
+#truckTable th { 
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* --- Button Styles (General) --- */
+#routeTable .action-buttons button,
+#assistantTable .action-buttons button,
+#userTable .action-buttons button {
+    margin: 0 3px;
+    padding: 5px 8px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-size: 0.9em;
+    display: inline-flex; 
+    align-items: center; 
+    gap: 3px; 
+}
+
+.edit-btn {
+    background-color: rgb(46, 115, 218);
+    color: white;
+}
+
+.delete-btn {
+    background-color: #d9534f; 
+    color: white;
+}
+
+.add-user-btn { 
+    background-color: rgb(9, 110, 9); 
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    float: left;
+    margin-bottom: 15px;
+}
+
+.add-user-btn i { 
+    margin-right: 5px;
+}
+
+.add-record-btn { 
+    background-color: #5cb85c;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.add-record-btn i { 
+    margin-right: 0px;
+}
+
+/* --- Filter Area Styles --- */
+.filter-area { 
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    float: left; 
+}
+
+.filter-area label { 
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.filter-area select { 
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+
+
+/* --- Modal Styles --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    background-color: rgba(0, 0, 0, 0.4); 
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1000; 
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.modal-content {
+    background-color: #fefefe; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 85%; 
+    max-width: 600px; 
+    border-radius: 5px; 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 90vh; 
+    overflow-y: auto; 
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Input/Select Styles (Combined types from both sets) */
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content input[type="date"], 
+.modal-content input[type="number"], 
+.modal-content select {
+    width: calc(100% - 22px); 
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    display: block; 
+    font-size: 1em; 
+}
+
+/* Specific flex container for LGU/Private fields (from second set) */
+.lgu-private-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.lgu-private-group>div {
+    flex-grow: 1;
+}
+
+.lgu-private-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.lgu-private-group input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+.modal-content input.error,
+.modal-content select.error {
+    border-color: red;
+}
+
+.modal-content .error-message {
+    color: red;
+    font-size: 0.85em;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.password-note { 
+    font-size: 0.9em;
+    color: #666;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.modal-content button {
+    margin: 10px 5px 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.save-btn {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+}
+
+.cancel-btn {
+    background-color: #ccc;
+    color: black;
+    border: none;
+}
+
+.confirm-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+
+#deleteConfirmModal .modal-content {
+    max-width: 350px;
+    text-align: center;
+}
+
+#deleteConfirmMunicipalityModal .modal-content,
+#logoutModal .modal-content { 
+    max-width: 350px;
+    text-align: center;
+}
+
+
+
+.message {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+
+.message.success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 10px;
+  margin-top: 90px !important; 
+  padding-right: 25px;
+}
+
+.form-buttons .save-btn,
+.form-buttons .cancel-btn {
+  width: 90px;          
+  height: 32px;         
+  font-size: 0.9em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.form-buttons .save-btn {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.form-buttons .cancel-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.form-buttons .save-btn:hover {
+  background-color: #4cae4c;
+}
+
+.form-buttons .cancel-btn:hover {
+  background-color: #c9302c;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content select {
+  padding: 6px 8px;           
+  font-size: 0.9em;
+}
+
+.form-grid {
+  gap: 10px 15px;              
+}
+
+

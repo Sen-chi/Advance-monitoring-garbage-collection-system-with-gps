@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('../images/bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin: 0;
+}
+
+form {
+    /* This is the key change to make the form smaller */
+    max-width: 300px; /* Sets a maximum width */
+    width: 100%;      /* Allows it to be responsive and shrink on small screens */
+
+    background: rgba(255, 255, 255, 0.95); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Apply to all input types for consistency */
+input[type="email"],
+input[type="password"],
+input[type="text"],
+select {
+    width: 100%; /* Changed from 90% */
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Important for consistent sizing */
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Added smooth transition */
+}
+
+input[type="submit"]:hover {
+    background-color: yellowgreen;
+}
+
+/* Removed the .noAcc and h5 styles as they are no longer needed */
