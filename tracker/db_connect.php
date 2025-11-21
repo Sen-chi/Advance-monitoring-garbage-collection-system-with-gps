@@ -3,36 +3,27 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "amgcs_db";
-$charset = 'utf8mb4'; // Recommended charset
+$dbname = "amgcs_db"; // Make sure this is your correct database name
+$charset = 'utf8mb4';
 
-// Data Source Name (DSN)
 $dsn = "mysql:host=$servername;dbname=$dbname;charset=$charset";
 
-// PDO Options
 $options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // Enable exception mode
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // Fetch associative arrays
-    PDO::ATTR_EMULATE_PREPARES   => false,                  // Use real prepared statements
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
 ];
 
 try {
-    // Create PDO instance
     $pdo = new PDO($dsn, $username, $password, $options);
-
-    // *** ADD THIS LINE ***
-    // Return the connection object if successful
-    return $pdo;
+    
+    // This is correct. The file will return the connection object.
+    return $pdo; 
 
 } catch (PDOException $e) {
-    // Log error message for debugging
-    error_log("Database Connection Failed: " . $e->getMessage());
-
-    // Display a user-friendly error on the page instead of just JSON
-    // Stop script execution as we cannot proceed without a database
-    die("<html><body><h1>Database Connection Error</h1><p>Could not connect to the database. Please check the server logs or contact the administrator.</p><p><small>Error details (for debugging): " . htmlspecialchars($e->getMessage()) . "</small></p></body></html>");
+    // Instead of dying here, we throw the exception.
+    // This allows the script that called this file (process_login.php)
+    // to catch the error and handle it properly by sending a JSON response.
+    throw new PDOException($e->getMessage(), (int)$e->getCode());
 }
-
-// Code here won't be reached if connection fails due to die()
-// or if it succeeds due to return
 ?>

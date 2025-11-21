@@ -15,6 +15,11 @@ require_once 'templates/sidebar.php';
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
+    .content {
+      position: relative;
+      z-index: 0;
+    }
+
     #map {
       height: 400px; 
       width: 100%;
@@ -22,11 +27,13 @@ require_once 'templates/sidebar.php';
     }
     .map-box {
       margin-bottom: 20px;
+      position: relative; 
     }
     .truck-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      clear: both;
     }
     .truck-table th, .truck-table td {
       border: 1px solid #ddd;
@@ -44,7 +51,7 @@ require_once 'templates/sidebar.php';
     }
     .status-active { background-color: #28a745; } 
     .status-idle { background-color: #ffc107; }    
-    .status-maintenance { background-color: #dc3545; } 
+    .status-maintenance { background-color: #dc3545; }
   </style>
 </head>
 <body>

@@ -1,5 +1,5 @@
 <?php
-// handle_driver_actions.php
+// handle_assistant_actions.php
 
 ob_start();
 
@@ -14,7 +14,7 @@ try {
         throw new Exception("Failed to get a valid database connection object.");
     }
 } catch (Exception $e) {
-     error_log("Database Connection Error in driver actions handler: " . $e->getMessage());
+     error_log("Database Connection Error in assistant actions handler: " . $e->getMessage());
      ob_clean();
      header('Content-Type: application/json');
      echo json_encode(['success' => false, 'message' => 'Database connection failed. Please try again later.']);
@@ -22,8 +22,7 @@ try {
      exit;
 }
 
-require_once("drivermodel.php");
-require_once("truckmodel.php");
+require_once("assistantmodel.php");
 
 header('Content-Type: application/json');
 
@@ -55,55 +54,11 @@ try {
             $firstName = htmlspecialchars(trim($_POST['first_name'] ?? ''), ENT_QUOTES, 'UTF-8');
             $middleName = htmlspecialchars(trim($_POST['middle_name'] ?? ''), ENT_QUOTES, 'UTF-8');
             $lastName = htmlspecialchars(trim($_POST['last_name'] ?? ''), ENT_QUOTES, 'UTF-8');
-            $contactNo = htmlspecialchars(trim($_POST['contact_number'] ?? ''), ENT_QUOTES, 'UTF-8');
-            $status = htmlspecialchars(trim($_POST['status'] ?? ''), ENT_QUOTES, 'UTF-8');
-            $truckIdInput = $_POST['truck_id'] ?? '';
-            $userIdInput = $_POST['user_id'] ?? '';
-
-            $newTruckId = !empty($truckIdInput) && filter_var($truckIdInput, FILTER_VALIDATE_INT) ? (int)$truckIdInput : null;
-            $newUserId = !empty($userIdInput) && filter_var($userIdInput, FILTER_VALIDATE_INT) ? (int)$userIdInput : null;
-
-            if (empty($firstName)) $errors['firstName'] = 'First name is required.';
-            if (empty($lastName)) $errors['lastName'] = 'Last name is required.';
-            if (empty($contactNo)) $errors['contactNumber'] = 'Contact number is required.';
-            if (empty($status)) $errors['status'] = 'Status is required.';
-
-            if (empty($errors)) {
-                $insertSuccess = addDriver($pdo, $firstName, $middleName, $lastName, $contactNo, $newTruckId, $newUserId, $status);
-
-                if ($insertSuccess) {
-                    if ($newTruckId !== null) {
-                         updateTruckAvailabilityStatus($pdo, $newTruckId, 'Assigned');
-                    }
-                    $pdo->commit();
-                    $response = ['success' => true, 'message' => 'Driver added successfully!'];
-                } else {
-                     $pdo->rollBack();
-                     $response = ['success' => false, 'message' => 'Failed to add driver.', 'errors' => ['general' => 'Database operation failed.']];
-                }
-            } else {
-                 $response = ['success' => false, 'message' => 'Validation failed.', 'errors' => $errors];
-                 $pdo->rollBack();
-            }
-            break;
-
-        case 'edit':
-            $driverId = isset($_POST['id']) && filter_var($_POST['id'], FILTER_VALIDATE_INT) ? (int)$_POST['id'] : null;
-            
-            if (!$driverId) {
-                $errors['general'] = 'Invalid or missing driver ID for update.';
-            }
-
-            $firstName = htmlspecialchars(trim($_POST['first_name'] ?? ''), ENT_QUOTES, 'UTF-8');
-            $middleName = htmlspecialchars(trim($_POST['middle_name'] ?? ''), ENT_QUOTES, 'UTF-8');
-            $lastName = htmlspecialchars(trim($_POST['last_name'] ?? ''), ENT_QUOTES, 'UTF-8');
             // --- FIXED HERE ---
             $contactNo = htmlspecialchars(trim($_POST['contact_number'] ?? ''), ENT_QUOTES, 'UTF-8');
             $status = htmlspecialchars(trim($_POST['status'] ?? ''), ENT_QUOTES, 'UTF-8');
-            $truckIdInput = $_POST['truck_id'] ?? '';
             $userIdInput = $_POST['user_id'] ?? '';
-
-            $newTruckId = !empty($truckIdInput) && filter_var($truckIdInput, FILTER_VALIDATE_INT) ? (int)$truckIdInput : null;
+            
             $newUserId = !empty($userIdInput) && filter_var($userIdInput, FILTER_VALIDATE_INT) ? (int)$userIdInput : null;
 
             if (empty($firstName)) $errors['firstName'] = 'First name is required.';
@@ -112,29 +67,54 @@ try {
             if (empty($contactNo)) $errors['contactNumber'] = 'Contact number is required.';
             if (empty($status)) $errors['status'] = 'Status is required.';
 
-            if (empty($errors) && $driverId) {
-                $oldTruckId = getAssignedTruckIdForDriver($pdo, $driverId);
-                $updateResult = updateDriver($pdo, $driverId, $firstName, $middleName, $lastName, $contactNo, $newTruckId, $newUserId, $status);
+            if (empty($errors)) {
+                $insertSuccess = addAssistant($pdo, $firstName, $middleName, $lastName, $contactNo, $newUserId, $status);
+
+                if ($insertSuccess) {
+                    $pdo->commit();
+                    $response = ['success' => true, 'message' => 'Assistant added successfully!'];
+                } else {
+                     $pdo->rollBack();
+                     $response = ['success' => false, 'message' => 'Failed to add assistant.', 'errors' => ['general' => 'Database operation failed.']];
+                }
+            } else {
+                 $response = ['success' => false, 'message' => 'Validation failed.', 'errors' => $errors];
+                 $pdo->rollBack();
+            }
+            break;
+
+        case 'edit':
+            $assistantId = isset($_POST['id']) && filter_var($_POST['id'], FILTER_VALIDATE_INT) ? (int)$_POST['id'] : null;
+            
+            if (!$assistantId) {
+                $errors['general'] = 'Invalid or missing assistant ID for update.';
+            }
+
+            $firstName = htmlspecialchars(trim($_POST['first_name'] ?? ''), ENT_QUOTES, 'UTF-8');
+            $middleName = htmlspecialchars(trim($_POST['middle_name'] ?? ''), ENT_QUOTES, 'UTF-8');
+            $lastName = htmlspecialchars(trim($_POST['last_name'] ?? ''), ENT_QUOTES, 'UTF-8');
+            // --- FIXED HERE ---
+            $contactNo = htmlspecialchars(trim($_POST['contact_number'] ?? ''), ENT_QUOTES, 'UTF-8');
+            $status = htmlspecialchars(trim($_POST['status'] ?? ''), ENT_QUOTES, 'UTF-8');
+            $userIdInput = $_POST['user_id'] ?? '';
+
+            $newUserId = !empty($userIdInput) && filter_var($userIdInput, FILTER_VALIDATE_INT) ? (int)$userIdInput : null;
+
+            if (empty($firstName)) $errors['firstName'] = 'First name is required.';
+            if (empty($lastName)) $errors['lastName'] = 'Last name is required.';
+            // --- AND HERE ---
+            if (empty($contactNo)) $errors['contactNumber'] = 'Contact number is required.';
+            if (empty($status)) $errors['status'] = 'Status is required.';
+            
+            if (empty($errors) && $assistantId) {
+                $updateResult = updateAssistant($pdo, $assistantId, $firstName, $middleName, $lastName, $contactNo, $newUserId, $status);
 
                 if ($updateResult !== false) {
-                    $truckUpdateSuccess = true;
-                    if ($oldTruckId !== null && $oldTruckId != $newTruckId) {
-                        $truckUpdateSuccess = updateTruckAvailabilityStatus($pdo, $oldTruckId, 'Available');
-                    }
-                    if ($newTruckId !== null && $newTruckId != $oldTruckId && $truckUpdateSuccess) {
-                        $truckUpdateSuccess = updateTruckAvailabilityStatus($pdo, $newTruckId, 'Assigned');
-                    }
-
-                    if ($truckUpdateSuccess) {
-                        $pdo->commit();
-                        $response = ['success' => true, 'message' => 'Driver updated successfully!'];
-                    } else {
-                        $pdo->rollBack();
-                        $response = ['success' => false, 'message' => 'Failed to update truck assignment status. Operation cancelled.'];
-                    }
+                    $pdo->commit();
+                    $response = ['success' => true, 'message' => 'Assistant updated successfully!'];
                 } else {
                     $pdo->rollBack();
-                    $response = ['success' => false, 'message' => 'Failed to update driver. Database error.'];
+                    $response = ['success' => false, 'message' => 'Failed to update assistant. Database error.'];
                 }
             } else {
                 $pdo->rollBack();
@@ -143,31 +123,21 @@ try {
             break;
 
         case 'delete':
-            $driverId = isset($_POST['id']) && filter_var($_POST['id'], FILTER_VALIDATE_INT) ? (int)$_POST['id'] : null;
+            $assistantId = isset($_POST['id']) && filter_var($_POST['id'], FILTER_VALIDATE_INT) ? (int)$_POST['id'] : null;
 
-            if (!$driverId) {
-                $errors['general'] = 'Invalid or missing driver ID for deletion.';
+            if (!$assistantId) {
+                $errors['general'] = 'Invalid or missing assistant ID for deletion.';
             }
 
             if (empty($errors)) {
-                $oldTruckId = getAssignedTruckIdForDriver($pdo, $driverId);
-                $deleteResult = deleteDriver($pdo, $driverId);
+                $deleteResult = deleteAssistant($pdo, $assistantId);
 
                 if ($deleteResult) {
-                    $truckUpdateSuccess = true;
-                    if ($oldTruckId !== null) {
-                        $truckUpdateSuccess = updateTruckAvailabilityStatus($pdo, $oldTruckId, 'Available');
-                    }
-                    if ($truckUpdateSuccess) {
-                        $pdo->commit();
-                        $response = ['success' => true, 'message' => 'Driver deleted successfully!'];
-                    } else {
-                        $pdo->rollBack();
-                        $response = ['success' => false, 'message' => 'Driver deleted, but failed to update truck status.'];
-                    }
+                    $pdo->commit();
+                    $response = ['success' => true, 'message' => 'Assistant deleted successfully!'];
                 } else {
                     $pdo->rollBack();
-                    $response = ['success' => false, 'message' => 'Driver not found or already deleted.'];
+                    $response = ['success' => false, 'message' => 'Assistant not found or already deleted.'];
                 }
             } else {
                 $pdo->rollBack();
@@ -186,7 +156,7 @@ try {
      if ($pdo && $pdo->inTransaction()) {
         $pdo->rollBack();
      }
-     error_log("PDO Exception in handle_driver_actions.php [Action: $action]: " . $e->getMessage());
+     error_log("PDO Exception in handle_assistant_actions.php [Action: $action]: " . $e->getMessage());
      $response['success'] = false;
      $response['message'] = 'A database error occurred while processing your request.';
 }

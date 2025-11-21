@@ -114,7 +114,7 @@ switch ($action) {
                 ];
 
                 // Perform INSERT query (all columns are included as they are required for add)
-                $sql = "INSERT INTO mucipalities_record (entry_date, entry_time, lgu_municipality, private_company, plate_number, estimated_volume_per_truck_kg, driver_name)
+                $sql = "INSERT INTO municipalities_record (entry_date, entry_time, lgu_municipality, private_company, plate_number, estimated_volume_per_truck_kg, driver_name)
                         VALUES (:entry_date, :entry_time, :lgu_municipality, :private_company, :plate_number, :estimated_volume_per_truck_kg, :driver_name)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute($data);
@@ -177,7 +177,7 @@ switch ($action) {
                  // Construct the final SQL query
                  // This will now always include ALL columns in the SET clause for edit,
                  // but the *values* in $updateData will be NULL if an optional field was submitted empty.
-                 $sql = "UPDATE mucipalities_record SET " . implode(', ', array_keys($updateData)) . " WHERE municipal_record_id = :id";
+                 $sql = "UPDATE municipalities_record SET " . implode(', ', array_keys($updateData)) . " WHERE municipal_record_id = :id";
                  // Let's rebuild the SET clause string explicitly for clarity based on updateData keys (excluding 'id')
                  $setClauses = [];
                  foreach($updateData as $key => $value) {
@@ -185,7 +185,7 @@ switch ($action) {
                          $setClauses[] = "`{$key}` = :{$key}"; // Use backticks for column names just in case
                      }
                  }
-                 $sql = "UPDATE mucipalities_record SET " . implode(', ', $setClauses) . " WHERE municipal_record_id = :id";
+                 $sql = "UPDATE municipalities_record SET " . implode(', ', $setClauses) . " WHERE municipal_record_id = :id";
 
                  $updateData['id'] = $id; // Add ID to data array for the WHERE clause
 
@@ -193,7 +193,7 @@ switch ($action) {
                  $stmt->execute($updateData);
 
                  // Check if record exists and report success even if no data changed (rowCount is 0)
-                 $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM mucipalities_record WHERE municipal_record_id = :id");
+                 $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM municipalities_record WHERE municipal_record_id = :id");
                  $checkStmt->execute(['id' => $id]);
 
                  if ($checkStmt->fetchColumn() == 0) {
@@ -218,7 +218,7 @@ switch ($action) {
         }
 
         try {
-            $sql = "DELETE FROM mucipalities_record WHERE municipal_record_id = :id";
+            $sql = "DELETE FROM municipalities_record WHERE municipal_record_id = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['id' => $id]);
 

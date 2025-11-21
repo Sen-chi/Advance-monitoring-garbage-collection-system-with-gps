@@ -9,6 +9,7 @@
  */
 function getAllDrivers(PDO $pdo): array {
     try {
+        // This query uses td.*, which will automatically fetch the renamed column 'contact_number'.
         $sql = "SELECT td.*, ti.plate_number, ut.username
                 FROM truck_driver td
                 LEFT JOIN truck_info ti ON td.truck_id = ti.truck_id
@@ -54,21 +55,23 @@ function getAvailableUserAccounts(PDO $pdo, ?int $currentUserId = null): array {
  * @param string $firstName
  * @param string|null $middleName
  * @param string $lastName
- * @param string $contactNo
+ * @param string $contactNumber  // Changed from $contactNo
  * @param int|null $truckId
  * @param int|null $userId
  * @param string $status
  * @return bool True on success, false on failure.
  */
-function addDriver(PDO $pdo, string $firstName, ?string $middleName, string $lastName, string $contactNo, ?int $truckId, ?int $userId, string $status): bool {
-    $sql = "INSERT INTO truck_driver (first_name, middle_name, last_name, contact_no, truck_id, user_id, status)
-            VALUES (:first_name, :middle_name, :last_name, :contact_no, :truck_id, :user_id, :status)";
+function addDriver(PDO $pdo, string $firstName, ?string $middleName, string $lastName, string $contactNumber, ?int $truckId, ?int $userId, string $status): bool {
+    // The SQL query already correctly uses 'contact_number'
+    $sql = "INSERT INTO truck_driver (first_name, middle_name, last_name, contact_number, truck_id, user_id, status)
+            VALUES (:first_name, :middle_name, :last_name, :contact_number, :truck_id, :user_id, :status)";
     try {
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':first_name', $firstName, PDO::PARAM_STR);
         $stmt->bindParam(':middle_name', $middleName, $middleName === null || $middleName === '' ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindParam(':last_name', $lastName, PDO::PARAM_STR);
-        $stmt->bindParam(':contact_no', $contactNo, PDO::PARAM_STR);
+        // Updated variable to bind
+        $stmt->bindParam(':contact_number', $contactNumber, PDO::PARAM_STR);
         $stmt->bindParam(':truck_id', $truckId, $truckId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->bindParam(':user_id', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->bindParam(':status', $status, PDO::PARAM_STR);
@@ -88,18 +91,19 @@ function addDriver(PDO $pdo, string $firstName, ?string $middleName, string $las
  * @param string $firstName
  * @param string|null $middleName
  * @param string $lastName
- * @param string $contactNo
+ * @param string $contactNumber // Changed from $contactNo
  * @param int|null $newTruckId
  * @param int|null $newUserId
  * @param string $status
  * @return int|false Number of rows affected on success, false on failure.
  */
-function updateDriver(PDO $pdo, int $driverId, string $firstName, ?string $middleName, string $lastName, string $contactNo, ?int $newTruckId, ?int $newUserId, string $status): int|false {
+function updateDriver(PDO $pdo, int $driverId, string $firstName, ?string $middleName, string $lastName, string $contactNumber, ?int $newTruckId, ?int $newUserId, string $status): int|false {
+    // The SQL query already correctly uses 'contact_number'
     $sql = "UPDATE truck_driver
             SET first_name = :first_name,
                 middle_name = :middle_name,
                 last_name = :last_name,
-                contact_no = :contact_no,
+                contact_number = :contact_number,
                 truck_id = :truck_id,
                 user_id = :user_id,
                 status = :status
@@ -109,7 +113,8 @@ function updateDriver(PDO $pdo, int $driverId, string $firstName, ?string $middl
         $stmt->bindParam(':first_name', $firstName, PDO::PARAM_STR);
         $stmt->bindParam(':middle_name', $middleName, $middleName === null || $middleName === '' ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindParam(':last_name', $lastName, PDO::PARAM_STR);
-        $stmt->bindParam(':contact_no', $contactNo, PDO::PARAM_STR);
+        // Updated variable to bind
+        $stmt->bindParam(':contact_number', $contactNumber, PDO::PARAM_STR);
         $stmt->bindParam(':truck_id', $newTruckId, $newTruckId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->bindParam(':user_id', $newUserId, $newUserId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->bindParam(':status', $status, PDO::PARAM_STR);

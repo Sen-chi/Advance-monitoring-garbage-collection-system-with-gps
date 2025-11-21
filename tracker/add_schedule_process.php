@@ -1,4 +1,5 @@
 <?php
+// add_schedule_process.php
 session_start();
 require 'db_connect.php';
 
@@ -86,4 +87,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: dashboard_schedule.php");
     exit();
 }
-?>\
+?>

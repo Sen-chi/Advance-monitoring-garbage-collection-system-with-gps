@@ -1,14 +1,3 @@
-<?php
-// We assume $currentPage, $isFileManagement, $isMunicipality
-// have already been defined (e.g., in header.php)
-
-// Example of how $isFileManagement and $isMunicipality might be determined:
-/*
-$isFileManagement = in_array($currentPage, ['garbage_type_add.php', 'truck_add.php', 'truck_list.php']);
-$isMunicipality = in_array($currentPage, ['add_municipality.php', 'municipality_list.php']);
-*/
-
-?>
 <div class="sidebar">
   <a href="dashboard.php" class="sidebar-link <?= $currentPage === 'dashboard.php' ? 'active' : '' ?>"><i class="fas fa-table-columns"></i> Dashboard</a>
   <a href="dashboard_tracking.php" class="sidebar-link <?= $currentPage === 'dashboard_tracking.php' ? 'active' : '' ?>"><i class="fas fa-truck"></i> Garbage Truck Tracking</a>
@@ -28,6 +17,8 @@ $isMunicipality = in_array($currentPage, ['add_municipality.php', 'municipality_
     <a href="driver.php" class="sidebar-link <?= $currentPage === 'driver.php' ? 'active' : '' ?>"><i class="fa-solid fa-user-group"></i> Truck Drivers</a>
     <a href="truck_list.php" class="sidebar-link <?= $currentPage === 'truck_list.php' ? 'active' : '' ?>"><i class="fas fa-truck-front"></i> Trucks</a>
     <a href="employees.php" class="sidebar-link <?= $currentPage === 'employees.php' ? 'active' : '' ?>"><i class="fa-solid fa-user-tie"></i> Employees</a>
+    <a href="assistant.php" class="sidebar-link <?= $currentPage === 'assistant.php' ? 'active' : '' ?>"><i class="fa-solid fa-handshake-angle"></i> Assistants</a>
+    <a href="route.php" class="sidebar-link <?= $currentPage === 'route.php' ? 'active' : '' ?>"><i class="fa-solid fa-route"></i> Routes</a>
   </div>
 
 </div> <!-- End .sidebar -->

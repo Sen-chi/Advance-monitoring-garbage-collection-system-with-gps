@@ -15,6 +15,33 @@ a {
   text-decoration: none;
 }
 
+/* log out modal */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end; 
+  margin-top: 15px; 
+}
+
+.modal-content .yes-btn,
+.modal-content .cancel-btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px; /* Adds space between the buttons */
+}
+
+.modal-content .yes-btn {
+  background-color: #04986c;
+  border-radius: 8px;
+  color: white;
+}
+
+.modal-content .cancel-btn {
+  background-color: #d33e3e;
+  border-radius: 8px;
+  color: white;
+}
+
 /* Header (top bar) */
 .header {
   position: fixed;
@@ -62,7 +89,7 @@ cursor: pointer;
 
 .header .icon-trigger:hover,
 .header .icon-trigger:focus {
-color: #007BFF; 
+color: #ec4d4d; 
 outline: none;
 }
 
@@ -74,6 +101,18 @@ outline: none;
  
 }
 
+.header-icons .user-profile {
+  display: flex;
+  align-items: center;
+  color: white; /* Or whatever color your header text is */
+  margin-right: 20px; /* Creates space between the name and the notification bell */
+  font-size: 16px;
+}
+
+.header-icons .user-profile i {
+  margin-right: 8px; /* Creates space between the icon and the name */
+  font-size: 20px; /* Makes the user icon a bit larger */
+}
 
 /* --- Notification Dropdown Specific --- */
 .notif-dropdown {
@@ -95,7 +134,7 @@ display: none;
 position: absolute;
 right: 0; 
 top: calc(100% + 5px); 
-background-color: #f9f9f9;
+background-color: #020202;
 min-width: 180px; 
 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 z-index: 1010; 
@@ -143,6 +182,7 @@ display: block;
   flex-direction: column;
   z-index: 10;
   margin: center;
+  overflow-y: auto;
 }
 
 .sidebar a {
@@ -214,7 +254,7 @@ display: block;
 }
 
 .sidebar-link:hover {
-    background-color: #ddd;
+    background-color: #d3d3d2;
 }
 
 /* Style for the active page link */
@@ -312,7 +352,7 @@ form > * {
 }
 
 .btn-save {
-  background-color: #28a745;
+  background-color: #04986c;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -321,7 +361,7 @@ form > * {
 }
 
 .btn-cancel {
-  background-color: #dc3545;
+  background-color: #d33e3e;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -335,7 +375,7 @@ form > * {
 .dropdown-content {
   position: absolute;
   right: 10px;
-  top: 65px; /* <- Fix for "nasa taas parin si notif" */
+  top: 65px; 
   background-color: white;
   color: black;
   width: 320px;
@@ -397,83 +437,6 @@ form > * {
   color: gray;
 }
 
-/* ===============================
-   MODAL
-================================= */
-.modal {
-  display: none; /* Keep it hidden by default */
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Add display: flex to make justify-content and align-items work */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  /* Keep text-align: center if you want the title/message centered */
-  text-align: center;
-  max-width: 500px; /* Optional: Add a max-width for better responsiveness */
-  width: 90%;      /* Optional: Add a width */
-}
-
-/* New container for the buttons */
-.modal-buttons {
-  /* Override the centering from .modal-content for elements inside this div */
-  text-align: right;
-  margin-top: 20px; /* Add some space above the buttons */
-}
-
-/* Keep existing button styles, but maybe adjust margins slightly */
-.modal-content .yes-btn,
-.modal-content .cancel-btn {
-  padding: 10px 20px;
-  /* Adjust horizontal margin if needed, keep vertical margin */
-  margin: 10px 5px; 
-  border: none;
-  cursor: pointer;
-  /* Remove text-align: center as it's handled by .modal-buttons container */
-}
-
-.modal-content .yes-btn {
-  background-color: #04986c;
-  border-radius: 8px;
-  color: white;
-}
-
-.modal-content .cancel-btn {
-  background-color: #d33e3e;
-  border-radius: 8px;
-  color: white;
-}
-
-/* Keep existing title style */
-.modal-content h3 {
-  margin-top: 0;
-  /* Keep text-align: center if you want the title centered */
-  text-align: center;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
-
-/* Keep existing label style */
-.modal-content label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  /* Keep text-align: center if you want labels centered */
-  text-align: center;
-}
-
-/* ===============================
-   TABLE STYLES
-================================= */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -501,19 +464,6 @@ table tbody tr:hover {
 /* ===============================
    STATUS & TYPE TAGS
 ================================= */
-.status-active {
-  color: green;
-  
-}
-
-.status-completed {
-  color: blue;
-}
-
-.status-cancelled {
-  color: grey;
-  text-decoration: line-through;
-}
 
 .waste-type {
   font-weight: bold;
@@ -549,9 +499,7 @@ table tbody tr:hover {
 .status-idle { background-color: #f9a825; }
 .status-maintenance { background-color: #d32f2f; }
 
-/* ===============================
-   BUTTON STYLES
-================================= */
+/* BUTTON STYLES */
 .btn {
   padding: 8px 15px;
   color: rgb(57, 177, 63);
@@ -570,42 +518,42 @@ table tbody tr:hover {
 }
 
 .btn-edit, .btn-delete {
-  padding: 6px 12px; /* Consistent padding */
-  border-radius: 6px; /* Rounded corners */
-  font-size: 14px; /* Same font size */
+  padding: 6px 12px; 
+  border-radius: 6px; 
+  font-size: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: auto;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-edit {
-  background-color: #45f34d; /* Green for edit */
+  background-color: #4caf50; 
   color: white;
 }
 
 .btn-delete {
-  background-color: #dc3545; /* Red for delete */
+  background-color: #dc3545; 
   color: white;
 }
 
 .btn-edit:hover {
-  background-color: #4caf50; /* Slightly darker green on hover */
-  transform: translateY(-2px); /* Slight elevation on hover */
+  background-color: #45f34d; 
+  transform: translateY(-2px); 
 }
 
 .btn-delete:hover {
-  background-color: #e02424; /* Slightly darker red on hover */
-  transform: translateY(-2px); /* Slight elevation on hover */
+  background-color: #e02424; 
+  transform: translateY(-2px); 
 }
 
 .action-buttons {
   display: flex;
-  justify-content: center; /* Center-align the buttons */
-  gap: 10px; /* Add space between buttons */
-  align-items: center; /* Vertically align the buttons */
+  justify-content: center; 
+  gap: 10px; 
+  align-items: center; 
 }
 
 .btn-add {
@@ -630,9 +578,7 @@ table tbody tr:hover {
   transform: translateY(-2px);
 }
 
-/* ===============================
-   FLASH MESSAGES
-================================= */
+/* FLASH MESSAGES */
 .flash-message {
   padding: 10px 15px;
   margin-bottom: 15px;
@@ -652,35 +598,97 @@ table tbody tr:hover {
   border-color: #f5c6cb;
 }
 
+
 /* ===============================
    DASHBOARD CARD STYLES
 ================================= */
 .dashboard-cards {
   display: flex;
-  gap: 20px;
+  gap: 15px; 
   flex-wrap: wrap;
   margin-bottom: 20px;
+  justify-content: flex-start; 
 }
 
+/* 
+  NEW: Rule for the link wrapper.
+  This takes the SIZE instructions from the original .card class.
+*/
+.card-link {
+  /* --- MOVED FROM .card --- */
+  flex: 1 1 160px; 
+  max-width: 180px; 
+
+  /* --- Resets default link styles --- */
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 
+  UPDATED: The .card class now ONLY handles VISUALS.
+  The flex sizing rules have been removed.
+*/
 .card {
-  flex: 1;
-  min-width: 200px;
-  padding: 20px;
+  flex: 0 1 180px; 
+  width: 180px;
+  padding: 15px; 
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   text-align: center;
+  box-sizing: border-box; 
+  min-height: 90px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  
+  /* Make sure the card fills the link wrapper completely */
+  width: 100%;
+  height: 100%;
 }
 
 .card h3 {
-  font-size: 2rem;
+  font-size: 1.6rem; 
   color: darkgreen;
-  margin-bottom: 5px;
+  margin-bottom: 5px; 
 }
 
 .card p {
-  font-size: 1rem;
+  font-size: 0.9rem; 
   color: #333;
+  margin-top: 0; 
+}
+
+/* =================================
+   CARD HOVER EFFECT
+================================= */
+
+/* 1. Prepare the base card for the animation */
+.card {
+  /* Add a border that is initially invisible. This prevents the card
+     from "jumping" in size when the border appears on hover. */
+  border: 2px solid transparent;
+
+  /* Tell the browser to smoothly animate any changes to the
+     transform, border-color, and box-shadow over 0.2 seconds. */
+  transition: transform 0.2s ease, 
+              border-color 0.2s ease, 
+              box-shadow 0.2s ease;
+}
+
+
+/* 2. Define what happens when you hover over a card */
+/* This targets any card, whether it's a link or not */
+.card-link:hover .card,
+.card:hover {
+  /* Change the border color to a nice green */
+  border-color: #28a745; /* You can pick any green you like */
+
+  /* Make the card "pop" by lifting it up slightly */
+  transform: translateY(-5px);
+
+  /* Optional: Make the shadow a bit stronger for more depth */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 /* ===============================
@@ -692,6 +700,7 @@ table tbody tr:hover {
   gap: 30px;
   justify-content: space-between;
   margin-top: 30px;
+  
 }
 
 .chart-box {
@@ -708,3 +717,82 @@ table tbody tr:hover {
   width: 100% !important;
   height: 280px !important;
 }
+
+
+/* ===============================
+   HEADER AND BODY CONTENT
+================================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(rgba(0, 80, 0, 0.75), rgba(0, 80, 0, 0.75)),
+              url('../images/green_bg.jpg') no-repeat center center;
+  background-size: cover;
+  padding: 4px 25px; 
+  color: white;
+  height: 60px; 
+  border-bottom: 2px solid #064d1a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+body {
+  margin: 0; 
+  padding: 100;
+}
+
+
+.header .logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header .logo img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.header .logo strong {
+  font-size: 26px; /* dati 30px — konting liit */
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.header .logo small {
+  font-size: 17px; 
+  color: #e8ffe8;
+  font-weight: 600;
+  display: inline-block;
+  max-width: 400px; 
+  line-height: 1.3;
+}
+
+/* --- HEADER ICONS --- */
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icons .icon-trigger {
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.header-icons .icon-trigger:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+

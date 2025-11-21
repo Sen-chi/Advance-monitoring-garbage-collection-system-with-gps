@@ -2,41 +2,108 @@
 // employeemodel.php
 
 /**
- * Fetches all non-collector employees, joining with user_table to get username and role.
+ * Fetches ALL personnel (staff, drivers, assistants) who have an associated user account.
  *
  * @param PDO $pdo The PDO database connection object.
- * @return array|false An array of employee data, or false on failure.
+ * @return array|false An array of all personnel data, or false on failure.
  */
-function getAllEmployees(PDO $pdo)
+function getAllPersonnel(PDO $pdo)
 {
-    // MODIFIED: Added u.role to SELECT and a WHERE clause to exclude 'collector'
-    $sql = "SELECT
-                e.employee_id,
-                e.user_id,
-                e.first_name,
-                e.middle_name,
-                e.last_name,
-                e.contact_number,
-                e.employee_status,
-                u.username,
-                u.role
-            FROM
-                employee e
-            JOIN
-                user_table u ON e.user_id = u.user_id
-            WHERE
-                u.role != 'collector'";
+    // This query combines results from three different personnel tables
+    $sql = "
+        -- First, get the general employees
+        SELECT
+            e.employee_id AS personnel_id,
+            'Staff' AS personnel_type,
+            e.user_id,
+            u.username,
+            e.first_name,
+            e.middle_name,
+            e.last_name,
+            u.role,
+            e.contact_number,
+            e.employee_status AS status
+        FROM employee e
+        JOIN user_table u ON e.user_id = u.user_id
+
+        UNION ALL
+
+        -- Second, get the truck drivers
+        SELECT
+            td.driver_id AS personnel_id,
+            'Driver' AS personnel_type,
+            td.user_id,
+            u.username,
+            td.first_name,
+            td.middle_name,
+            td.last_name,
+            u.role,
+            td.contact_number,
+            td.status
+        FROM truck_driver td
+        JOIN user_table u ON td.user_id = u.user_id
+        WHERE td.user_id IS NOT NULL
+
+        UNION ALL
+
+        -- Third, get the truck assistants
+        SELECT
+            ta.assistant_id AS personnel_id,
+            'Assistant' AS personnel_type,
+            ta.user_id,
+            u.username,
+            ta.first_name,
+            ta.middle_name,
+            ta.last_name,
+            u.role,
+            ta.contact_number,
+            ta.status
+        FROM truck_assistant ta
+        JOIN user_table u ON ta.user_id = u.user_id
+        WHERE ta.user_id IS NOT NULL
+    ";
+
     try {
         $stmt = $pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        error_log("Database error in getAllEmployees: " . $e->getMessage());
+        error_log("Database error in getAllPersonnel: " . $e->getMessage());
         return false;
     }
 }
 
+
 /**
- * Fetches a single employee by ID.
+ * Fetches users who are not yet linked to ANY personnel record (employee, driver, or assistant).
+ * This is used to populate the 'Add Employee' dropdown.
+ *
+ * @param PDO $pdo The PDO database connection object.
+ * @return array|false An array of user data (user_id, username), or false on failure.
+ */
+function getUnassignedUsers(PDO $pdo)
+{
+     $sql = "SELECT user_id, username
+            FROM user_table
+            WHERE user_id NOT IN (
+                SELECT user_id FROM employee WHERE user_id IS NOT NULL
+                UNION
+                SELECT user_id FROM truck_driver WHERE user_id IS NOT NULL
+                UNION
+                SELECT user_id FROM truck_assistant WHERE user_id IS NOT NULL
+            )";
+    try {
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Database error in getUnassignedUsers: " . $e->getMessage());
+        return false;
+    }
+}
+
+
+/**
+ * Fetches a single employee by ID from the 'employee' table.
+ * Note: This remains unchanged and only works for 'Staff' type employees.
  *
  * @param PDO $pdo The PDO database connection object.
  * @param int $employeeId The ID of the employee to fetch.
@@ -44,13 +111,7 @@ function getAllEmployees(PDO $pdo)
  */
 function getEmployeeById(PDO $pdo, int $employeeId)
 {
-    $sql = "SELECT
-                employee_id, user_id, first_name, middle_name, last_name,
-                contact_number, employee_status
-            FROM
-                employee
-            WHERE
-                employee_id = :id";
+    $sql = "SELECT * FROM employee WHERE employee_id = :id";
     try {
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $employeeId, PDO::PARAM_INT);
@@ -63,29 +124,8 @@ function getEmployeeById(PDO $pdo, int $employeeId)
 }
 
 /**
- * Fetches users (excluding collectors) who are not linked to an employee record.
- *
- * @param PDO $pdo The PDO database connection object.
- * @return array|false An array of user data (user_id, username), or false on failure.
- */
-function getUnassignedUsers(PDO $pdo)
-{
-     // MODIFIED: Added a WHERE clause to exclude 'collector' roles
-     $sql = "SELECT user_id, username
-            FROM user_table
-            WHERE role != 'collector' AND user_id NOT IN (SELECT user_id FROM employee)";
-    try {
-        $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        error_log("Database error in getUnassignedUsers: " . $e->getMessage());
-        return false;
-    }
-}
-
-
-/**
- * Adds a new employee record.
+ * Adds a new employee record to the 'employee' table.
+ * Note: This is for non-driver/assistant roles.
  *
  * @param PDO $pdo The PDO database connection object.
  * @param array $data Associative array of employee data.
@@ -117,7 +157,7 @@ function addEmployee(PDO $pdo, array $data)
 }
 
 /**
- * Updates an existing employee record.
+ * Updates an existing employee record in the 'employee' table.
  *
  * @param PDO $pdo The PDO database connection object.
  * @param int $employeeId The ID of the employee to update.
@@ -151,7 +191,7 @@ function updateEmployee(PDO $pdo, int $employeeId, array $data)
 }
 
 /**
- * Deletes an employee record by ID.
+ * Deletes an employee record by ID from the 'employee' table.
  *
  * @param PDO $pdo The PDO database connection object.
  * @param int $employeeId The ID of the employee to delete.

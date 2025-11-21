@@ -1,127 +1,87 @@
-  <!-- Logout Confirmation Modal (Common element) -->
-  <div id="logoutModal" class="modal">
+</div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
         <div class="modal-content">
             <h3>Confirm Logout</h3>
             <p>Are you sure you want to logout?</p>
-        <div class="modal-buttons">
-        <button class="yes-btn" onclick="logout()">Yes</button>
-        <button class="cancel-btn" onclick="closeModal('logoutModal')">Cancel</button>
-        </div>
-        </div>
-    </div>
-
-  <!-- Common JavaScript -->
-  <script>
-    // --- Sidebar Dropdown ---
-    function toggleSidebarDropdown(e) {
-      e.preventDefault();
-      const section = e.currentTarget;
-      const dropdown = section.nextElementSibling;
-      const isShown = dropdown.classList.toggle('show');
-      section.classList.toggle('active-dropdown', isShown);
-    }
-
-    // --- Header Dropdown Logic ---
-    function setupDropdown(buttonId, menuId) { /* ... as before ... */ }
-    function closeOtherDropdowns(currentMenuId) { /* ... as before ... */ }
-    document.addEventListener('click', function (event) { /* ... as before ... */ });
-
-    // --- Notification Filtering (Placeholder/Basic) ---
-    function filterNotifications(type, event) { /* ... as before ... */ }
-
-    // --- Initialize common elements on DOMContentLoaded ---
-    document.addEventListener('DOMContentLoaded', () => {
-        setupDropdown('settings-button', 'settings-menu');
-        setupDropdown('notif-button', 'notif-menu');
-        // Maybe load initial notifications via AJAX here
-        // loadNotifications(); // Example function call
-        filterNotifications('all'); // Set initial filter
-    });
-
-    // --- Assumed functions for Modal (might be in logout.js or here) ---
-    function openLogoutModal(event) {
-      if (event) event.preventDefault();
-      const modal = document.getElementById('logoutModal');
-      if(modal) modal.style.display = 'flex';
-    }
-    function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if(modal) modal.style.display = 'none';
-    }
-    // function logout() is likely in logout.js
-
-  </script>
-
-  <!-- Include external common scripts -->
-  <script src="scripts/logout.js"></script> <!-- Adjust path if needed -->
-  <!-- Include page-specific scripts if needed (can be done here or in the page file itself) -->
-   <?php if (isset($pageJS) && is_array($pageJS)): ?>
-    <?php foreach ($pageJS as $jsFile): ?>
-      <script src="<?php echo htmlspecialchars($jsFile); ?>"></script>
-    <?php endforeach; ?>
-  <?php endif; ?>
-
-</body>
-</html>  <!-- Logout Confirmation Modal (Common element) -->
-  <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <h3>Confirm Logout</h3>
-            <p>Are you sure you want to logout?</p>
-            <button class="yes-btn" onclick="logout()">Yes</button>
-            <button class="cancel-btn" onclick="closeModal('logoutModal')">Cancel</button>
+            <div class="modal-buttons">
+                <button class="yes-btn" onclick="logout()">Yes</button>
+                <button class="cancel-btn" onclick="closeModal('logoutModal')">Cancel</button>
+            </div>
         </div>
     </div>
 
-  <!-- Common JavaScript -->
-  <script>
-    // --- Sidebar Dropdown ---
-    function toggleSidebarDropdown(e) {
-      e.preventDefault();
-      const section = e.currentTarget;
-      const dropdown = section.nextElementSibling;
-      const isShown = dropdown.classList.toggle('show');
-      section.classList.toggle('active-dropdown', isShown);
-    }
+    <!-- Universal JavaScript for All Pages -->
+    <script>
+        // --- UNIVERSAL FUNCTIONS (Available on all pages) ---
+        function openModal(modalId) {
+            $('#' + modalId).css('display', 'flex');
+        }
 
-    // --- Header Dropdown Logic ---
-    function setupDropdown(buttonId, menuId) { /* ... as before ... */ }
-    function closeOtherDropdowns(currentMenuId) { /* ... as before ... */ }
-    document.addEventListener('click', function (event) { /* ... as before ... */ });
+        function closeModal(modalId) {
+            $('#' + modalId).css('display', 'none');
+        }
 
-    // --- Notification Filtering (Placeholder/Basic) ---
-    function filterNotifications(type, event) { /* ... as before ... */ }
+        function openLogoutModal() {
+            openModal('logoutModal');
+        }
 
-    // --- Initialize common elements on DOMContentLoaded ---
-    document.addEventListener('DOMContentLoaded', () => {
-        setupDropdown('settings-button', 'settings-menu');
-        setupDropdown('notif-button', 'notif-menu');
-        // Maybe load initial notifications via AJAX here
-        // loadNotifications(); // Example function call
-        filterNotifications('all'); // Set initial filter
-    });
+        function logout() {
+            window.location.href = "sign_in.php"; 
+        }
 
-    // --- Assumed functions for Modal (might be in logout.js or here) ---
-    function openLogoutModal(event) {
-      if (event) event.preventDefault();
-      const modal = document.getElementById('logoutModal');
-      if(modal) modal.style.display = 'flex';
-    }
-    function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if(modal) modal.style.display = 'none';
-    }
-    // function logout() is likely in logout.js
+        function toggleSidebarDropdown(e) {
+            e.preventDefault();
+            const section = e.currentTarget;
+            const dropdown = section.nextElementSibling;
+            if (dropdown) {
+                const isShown = dropdown.classList.toggle('show');
+                section.classList.toggle('active-dropdown', isShown);
+            }
+        }
+        
+        // --- EVENT LISTENERS (This code runs on every page) ---
+        $(document).ready(function() {
+        
+            // --- CONTROLS THE BELL & GEAR ICONS ---
+            $('.header .icon-trigger').on('click', function(event) {
+                event.stopPropagation();
+                const dropdown = $(this).next('.dropdown-content');
+                $('.dropdown-content').not(dropdown).removeClass('show');
+                dropdown.toggleClass('show');
+            });
 
-  </script>
+            // --- CONTROLS THE LOGOUT BUTTON IN THE DROPDOWN ---
+            $('#settings-menu .logout-trigger').on('click', function(event) {
+                event.preventDefault();
+                openLogoutModal();
+            });
 
-  <!-- Include external common scripts -->
-  <script src="scripts/logout.js"></script> <!-- Adjust path if needed -->
-  <!-- Include page-specific scripts if needed (can be done here or in the page file itself) -->
-   <?php if (isset($pageJS) && is_array($pageJS)): ?>
-    <?php foreach ($pageJS as $jsFile): ?>
-      <script src="<?php echo htmlspecialchars($jsFile); ?>"></script>
-    <?php endforeach; ?>
-  <?php endif; ?>
+            // --- CONTROLS THE TABS IN THE NOTIFICATION DROPDOWN ---
+            $('#notif-menu .tab-button').on('click', function(event) {
+                event.stopPropagation();
+                $('#notif-menu .tab-button').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            // --- CLOSES DROPDOWNS & MODALS WHEN CLICKING OUTSIDE ---
+            $(window).on('click', function(event) {
+                if ($(event.target).hasClass('modal')) {
+                    closeModal($(event.target).attr('id'));
+                }
+                if (!$(event.target).closest('.icon-trigger, .dropdown-content').length) {
+                    $('.dropdown-content').removeClass('show');
+                }
+            });
+        });
+    </script>
+
+    <?php if (isset($pageJS) && is_array($pageJS)): ?>
+        <?php foreach ($pageJS as $jsFile): ?>
+            <script src="<?php echo htmlspecialchars($jsFile); ?>"></script>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
 </body>
 </html>

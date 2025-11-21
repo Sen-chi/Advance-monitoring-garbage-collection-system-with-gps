@@ -1,3 +1,65 @@
+/* --- Compact Two-Column Layout for Add/Edit User Modal --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 30px;
+  align-items: start;
+}
+
+.form-column label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-column input,
+.form-column select {
+  width: 100%;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Compact Add/Edit User Modal --- */
+.form-grid.compact {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 20px;
+}
+
+.form-grid.compact .form-column.full {
+  grid-column: span 2;
+}
+
+.form-grid.compact label {
+  font-size: 0.9em;
+  margin-bottom: 3px;
+}
+
+.form-grid.compact input,
+.form-grid.compact select {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.9em;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 /* --- General Content Styles --- */
 .content {
     margin-left: 270px;
@@ -25,7 +87,7 @@
     margin-top: 20px;
 }
 
-#municipalityTable { /* Added from second set */
+#municipalityTable { 
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -34,8 +96,10 @@
 /* Common table cell/header styles */
 #userTable th,
 #userTable td,
-#municipalityTable th, /* Added from second set */
-#municipalityTable td { /* Added from second set */
+#municipalityTable th, 
+#municipalityTable td,
+#truckTable th,
+#truckTable td { 
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
@@ -44,23 +108,25 @@
 
 /* Common table header styles */
 #userTable th,
-#municipalityTable th { /* Added from second set */
+#municipalityTable th,
+#truckTable th { 
     background-color: #f2f2f2;
     font-weight: bold;
 }
 
 /* --- Button Styles (General) --- */
-/* Note: The action-buttons button style from the second block is more complete (adds flex) */
-.action-buttons button {
+#routeTable .action-buttons button,
+#assistantTable .action-buttons button,
+#userTable .action-buttons button {
     margin: 0 3px;
     padding: 5px 8px;
     cursor: pointer;
     border: none;
     border-radius: 3px;
     font-size: 0.9em;
-    display: inline-flex; /* Added from second block */
-    align-items: center; /* Added from second block */
-    gap: 3px; /* Added from second block */
+    display: inline-flex; 
+    align-items: center; 
+    gap: 3px; 
 }
 
 .edit-btn {
@@ -69,12 +135,12 @@
 }
 
 .delete-btn {
-    background-color: #d9534f; /* Red */
+    background-color: #d9534f; 
     color: white;
 }
 
-.add-user-btn { /* From original file */
-    background-color: rgb(9, 110, 9); /* Green */
+.add-user-btn { 
+    background-color: rgb(9, 110, 9); 
     color: white;
     padding: 8px 15px;
     border: none;
@@ -82,23 +148,21 @@
     cursor: pointer;
     font-size: 0.9em;
     float: left;
-    /* Note: Original had float: left, second had float: right on a different button. Keeping original float for this button */
     margin-bottom: 15px;
 }
 
-.add-user-btn i { /* From original file */
+.add-user-btn i { 
     margin-right: 5px;
 }
 
-.add-record-btn { /* From second file, renamed slightly to avoid conflict */
-    background-color: #5cb85c; /* Green */
+.add-record-btn { 
+    background-color: #5cb85c;
     color: white;
     padding: 8px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9em;
-    /* Note: Second file had float: right, but flex below makes float less necessary and potentially problematic with filter. Removed float.*/
     margin-bottom: 15px;
     margin-right: 10px;
     display: inline-flex;
@@ -106,25 +170,25 @@
     gap: 5px;
 }
 
-.add-record-btn i { /* From second file */
+.add-record-btn i { 
     margin-right: 0px;
 }
 
 /* --- Filter Area Styles --- */
-.filter-area { /* Added from second set */
+.filter-area { 
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 10px;
-    float: left; /* Positioning filter area to the left */
+    float: left; 
 }
 
-.filter-area label { /* Added from second set */
+.filter-area label { 
     font-weight: bold;
     margin-right: 5px;
 }
 
-.filter-area select { /* Added from second set */
+.filter-area select { 
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -133,18 +197,18 @@
 }
 
 
+
 /* --- Modal Styles --- */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: hidden; /* Prevent scroll on the modal overlay itself */
-    background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
-    /* Using absolute positioning on modal-content for centering, so no need for flex centering here */
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    background-color: rgba(0, 0, 0, 0.4); 
 }
 
 .close-btn {
@@ -155,7 +219,7 @@
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 1001; /* Ensure close button is above content */
+    z-index: 1000; 
 }
 
 .close-btn:hover,
@@ -165,27 +229,21 @@
     cursor: pointer;
 }
 
-/* Modal Content Styling (Combined and Adjusted) */
+
 .modal-content {
-    background-color: #fefefe; /* White background */
+    background-color: #fefefe; 
     padding: 20px;
     border: 1px solid #888;
-    width: 90%; /* Responsive width */
-    max-width: 600px; /* Using the larger max-width from the first set */
-    border-radius: 5px; /* Rounded corners */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Using shadow from first set, slightly adjusted */
-
-    /* Centering using absolute position and transform (from first set's strategy) */
+    width: 85%; 
+    max-width: 600px; 
+    border-radius: 5px; 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    /* Handling tall content (from first set) */
-    max-height: 90vh; /* Limit max height to 90% of the viewport height */
-    overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
-
-    /* Removed margin: auto; as it conflicts with absolute positioning */
+    max-height: 90vh; 
+    overflow-y: auto; 
 }
 
 .modal-content h3 {
@@ -207,17 +265,17 @@
 .modal-content input[type="text"],
 .modal-content input[type="email"],
 .modal-content input[type="password"],
-.modal-content input[type="date"], /* Added from second set */
-.modal-content input[type="number"], /* Added from second set */
+.modal-content input[type="date"], 
+.modal-content input[type="number"], 
 .modal-content select {
-    width: calc(100% - 22px); /* Account for padding and border */
+    width: calc(100% - 22px); 
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box; /* Include padding and border */
-    display: block; /* Ensure they take full width (from first set) */
-    font-size: 1em; /* Ensure readable text (from second set) */
+    box-sizing: border-box; 
+    display: block; 
+    font-size: 1em; 
 }
 
 /* Specific flex container for LGU/Private fields (from second set) */
@@ -259,7 +317,7 @@
     display: none;
 }
 
-.password-note { /* From original file */
+.password-note { 
     font-size: 0.9em;
     color: #666;
     margin-top: -10px;
@@ -292,20 +350,20 @@
     border: none;
 }
 
-/* Specific styles for different modals */
+
 #deleteConfirmModal .modal-content {
     max-width: 350px;
     text-align: center;
 }
 
 #deleteConfirmMunicipalityModal .modal-content,
-#logoutModal .modal-content { /* Added from second set */
+#logoutModal .modal-content { 
     max-width: 350px;
     text-align: center;
 }
 
 
-/* --- Message Styles --- */
+
 .message {
     padding: 10px 15px;
     margin-bottom: 15px;
@@ -325,9 +383,61 @@
     color: #721c24;
 }
 
-/* --- Utility Classes --- */
+
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
 }
+
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 10px;
+  margin-top: 90px !important; 
+  padding-right: 25px;
+}
+
+.form-buttons .save-btn,
+.form-buttons .cancel-btn {
+  width: 90px;          
+  height: 32px;         
+  font-size: 0.9em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.form-buttons .save-btn {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.form-buttons .cancel-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.form-buttons .save-btn:hover {
+  background-color: #4cae4c;
+}
+
+.form-buttons .cancel-btn:hover {
+  background-color: #c9302c;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content select {
+  padding: 6px 8px;           
+  font-size: 0.9em;
+}
+
+.form-grid {
+  gap: 10px 15px;              
+}
+
+
